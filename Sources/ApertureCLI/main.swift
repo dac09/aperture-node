@@ -11,6 +11,7 @@ struct Options: Decodable {
   let screenId: CGDirectDisplayID
   let audioDeviceId: String?
   let videoCodec: String?
+  let scaleFactor: CGFloat?
 }
 
 func record() throws {
@@ -24,7 +25,8 @@ func record() throws {
     highlightClicks: options.highlightClicks,
     screenId: options.screenId == 0 ? .main : options.screenId,
     audioDevice: options.audioDeviceId != nil ? AVCaptureDevice(uniqueID: options.audioDeviceId!) : nil,
-    videoCodec: options.videoCodec
+    videoCodec: options.videoCodec,
+    scaleFactor: options.scaleFactor == nil ? 1 : options.scaleFactor!
   )
 
   recorder.onStart = {
