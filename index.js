@@ -102,7 +102,7 @@ class Aperture {
 
         recorderOpts.videoCodec = codecMap.get(videoCodec);
       }
-        
+
         console.log(':: Aperture Options :: ')
         console.log(recorderOpts)
 
@@ -160,9 +160,16 @@ class Aperture {
     }
 
     console.log("APERTURE :: Cancelling Recording ::");
-    this.recorder.kill();
+
+    // Duplicate check because, sentry keeps reporting errors
+    if (this.recorder) {
+      this.recorder.kill();
+      this.recorderTimeout && clearTimeout(this.recorderTimeout);
+      await this.recorder
+    }
+
     this.recorder = null;
-    this.recorderTimeout && clearTimeout(this.recorderTimeout);
+    return;
   }
 }
 
