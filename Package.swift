@@ -12,7 +12,7 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "../Aperture", .branch("try/5.2.0+scalefactor"))
+    .package(url: "https://github.com/tapehq/Aperture", .branch("try/5.2.0+scalefactor")),
   ],
   targets: [
     .target(
