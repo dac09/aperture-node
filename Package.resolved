@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "Aperture",
-        "repositoryURL": "/Users/dac09/Code/aperture-group/Aperture",
+        "repositoryURL": "https://github.com/tapehq/Aperture",
         "state": {
           "branch": "try/5.2.0+scalefactor",
           "revision": "a5d460104726e0205f903ab988a1ecf91ea46eb2",
