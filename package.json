@@ -1,9 +1,9 @@
 {
-  "name": "aperture",
+  "name": "@tapehq/aperture",
   "version": "5.3.2-sf.4",
   "description": "Record the screen on macOS",
   "license": "MIT",
-  "repository": "wulkano/aperture-node",
+  "repository": "git://github.com/tapehq/aperture-node.git",
   "engines": {
     "node": ">=8"
   },
