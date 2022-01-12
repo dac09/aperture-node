@@ -175,6 +175,11 @@ class Aperture {
 
 module.exports = () => new Aperture();
 
+module.exports.compressVideo = async (inputPath, outputPath) => {
+    console.log("APERTURE :: Compressing Recording ::");
+    await execa.stderr(BIN, ["compress", inputPath, outputPath]);
+};
+
 module.exports.screens = async () => {
   const stderr = await execa.stderr(BIN, ["list-screens"]);
 

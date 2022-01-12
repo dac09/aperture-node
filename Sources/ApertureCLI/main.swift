@@ -54,11 +54,59 @@ func record() throws {
   RunLoop.main.run()
 }
 
+func compressVideo(inputPath: String, outputPath: String) throws {
+  let original = URL(fileURLWithPath: inputPath)
+  let compressed = URL(fileURLWithPath: outputPath)
+  let asset = AVAsset(url: original)
+  var preset: String
+  if #available(macOS 10.13, *) {
+    preset = AVAssetExportPresetHEVCHighestQuality
+  } else {
+    preset = "unknown"
+  }
+  let session = AVAssetExportSession(asset: asset, presetName: preset)
+  session?.shouldOptimizeForNetworkUse = true
+  session?.outputURL = compressed
+  session?.exportAsynchronously { [weak session] in
+    guard let session = session else { return }
+
+    switch session.status {
+    case .unknown:
+      print("Export session received unknown status")
+    case .waiting:
+      print("Export session waiting")
+    case .exporting:
+      print("Export session started")
+    case .completed:
+      print("Export session finished")
+      exit(0)
+    case .failed:
+      if let error = session.error {
+        print("Export session failed", error)
+      } else {
+        print("Export session failed with an unknown error")
+      }
+      exit(1)
+    case .cancelled:
+      print("Cancelled")
+      return
+    @unknown default:
+      print("Unknown case")
+      exit(1)
+    }
+  }
+
+  // Wait
+  setbuf(__stdoutp, nil)
+  RunLoop.main.run()
+}
+
 func showUsage() {
   print(
     """
     Usage:
       aperture <options>
+      aperture compress <input_file> <output_file>
       aperture list-screens
       aperture list-audio-devices
     """
@@ -66,6 +114,15 @@ func showUsage() {
 }
 
 switch CLI.arguments.first {
+case "compress":
+  let inputPath: String = CLI.arguments[1]
+  let outputPath: String = CLI.arguments[2]
+  do {
+    try compressVideo(inputPath: inputPath, outputPath: outputPath)
+  } catch {
+    print("Something went wrong while compressing")
+    exit(1)
+  }
 case "list-screens":
   print(try toJson(Devices.screen()), to: .standardError)
   exit(0)
